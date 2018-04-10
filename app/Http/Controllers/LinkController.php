@@ -34,11 +34,12 @@ class LinkController extends Controller {
         $long_url = $request->input('link-url');
         $custom_ending = $request->input('custom-ending');
         $is_secret = ($request->input('options') == "s" ? true : false);
+        $campaign = $request->input('campaign');
         $creator = session('username');
         $link_ip = $request->ip();
 
         try {
-            $short_url = LinkFactory::createLink($long_url, $is_secret, $custom_ending, $link_ip, $creator);
+            $short_url = LinkFactory::createLink($long_url, $is_secret, $custom_ending, $link_ip, $creator,false,false, $campaign);
         }
         catch (\Exception $e) {
             return self::renderError($e->getMessage());

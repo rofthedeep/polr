@@ -5,9 +5,10 @@
 @endsection
 
 @section('content')
-<h3>Shortened URL</h3>
-<input type='text' class='result-box form-control' value='{{$short_url}}' />
-<a href='{{route('index')}}' class='btn btn-info back-btn'>Shorten another</a>
+<h3>Created Campaign: {{$message}}</h3>
+
+<a href="/admin#campaigns" class='btn btn-info back-btn'>Back to Admin</a>
+
 @endsection
 
 @section('js')

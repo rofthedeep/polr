@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateApiQuotaIndex extends Migration
+class LinkLinksToCampaigns extends Migration
 {
     /**
      * Run the migrations.
@@ -14,10 +14,9 @@ class CreateApiQuotaIndex extends Migration
     {
         Schema::table('links', function (Blueprint $table)
         {
-            $table->index(
-                ['created_at', 'creator', 'is_api'],
-                'api_quota_index'
-            );
+            $table->engine = 'InnoDB';
+            $table->integer('campaign_id')->nullable()->default(null)->unsigned();
+            $table->foreign('campaign_id')->references('id')->on('campaigns')->onDelete('set null');
         });
     }
 
@@ -30,7 +29,10 @@ class CreateApiQuotaIndex extends Migration
     {
         Schema::table('links', function (Blueprint $table)
         {
-            $table->dropIndex('api_quota_index');
+            $table->engine = 'InnoDB';
+            $table->dropForeign(['campaign_id']);
+            $table->dropColumn('campaign_id');
         });
+
     }
 }

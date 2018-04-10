@@ -38,6 +38,12 @@ $app->get('/admin/stats/{short_url}', ['uses' => 'StatsController@displayStats']
 
 $app->post('/login', ['as' => 'plogin', 'uses' => 'UserController@performLogin']);
 $app->post('/shorten', ['as' => 'pshorten', 'uses' => 'LinkController@performShorten']);
+
+// Campaign
+$app->post('/create/campaign', ['as' => 'createCampaign', 'uses' => 'CampaignController@createCampaign']);
+$app->post('/update/campaign/{id}', ['uses' => 'CampaignController@updateCampaign']);
+$app->get('/edit/campaign/{id}', ['uses' => 'CampaignController@displayEditCampaign']);
+
 $app->post('/lost_password', ['as' => 'plost_password', 'uses' => 'UserController@performSendPasswordResetCode']);
 $app->post('/reset_password/{username}/{recovery_key}', ['as' => 'preset_password', 'uses' => 'UserController@performPasswordReset']);
 

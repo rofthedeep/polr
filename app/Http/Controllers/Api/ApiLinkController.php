@@ -28,9 +28,10 @@ class ApiLinkController extends ApiController {
 
         $link_ip = $request->ip();
         $custom_ending = $request->input('custom_ending');
+        $campaign = $request->input('campaign');
 
         try {
-            $formatted_link = LinkFactory::createLink($long_url, $is_secret, $custom_ending, $link_ip, $user->username, false, true);
+            $formatted_link = LinkFactory::createLink($long_url, $is_secret, $custom_ending, $link_ip, $user->username, false, true, $campaign);
         }
         catch (\Exception $e) {
             throw new ApiException('CREATION_ERROR', $e->getMessage(), 400, $response_type);
@@ -70,6 +71,7 @@ class ApiLinkController extends ApiController {
                 'long_url' => $link['long_url'],
                 'created_at' => $link['created_at'],
                 'clicks' => $link['clicks'],
+                'campaign_id' => $link['campaign_id'],
                 'updated_at' => $link['updated_at'],
                 'created_at' => $link['created_at']
             ], 'lookup', $response_type, $link['long_url']);

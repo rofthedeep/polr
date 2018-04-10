@@ -1,10 +1,14 @@
 <?php
+
 namespace App\Helpers;
+
 use App\Models\Link;
 use App\Helpers\BaseHelper;
 
-class LinkHelper {
-    static public function checkIfAlreadyShortened($long_link) {
+class LinkHelper
+{
+    static public function checkIfAlreadyShortened($long_link)
+    {
         /**
          * Provided a long link (string),
          * detect whether the link belongs to an URL shortener.
@@ -33,7 +37,8 @@ class LinkHelper {
         return false;
     }
 
-    static public function linkExists($link_ending) {
+    static public function linkExists($link_ending)
+    {
         /**
          * Provided a link ending (string),
          * return the link object, or false.
@@ -45,13 +50,13 @@ class LinkHelper {
 
         if ($link != null) {
             return $link;
-        }
-        else {
+        } else {
             return false;
         }
     }
 
-    static public function longLinkExists($long_url, $username=false) {
+    static public function longLinkExists($long_url, $username = false, $campaign = null)
+    {
         /**
          * Provided a long link (string),
          * check whether the link is in the DB.
@@ -59,37 +64,38 @@ class LinkHelper {
          * user.
          * @return boolean
          */
+
+        if ($campaign == '') {
+            $campaign = null;
+        }
+
         $link_base = Link::longUrl($long_url)
             ->where('is_custom', 0)
             ->where('secret_key', '');
 
-        if (is_null($username)) {
-            // Search for links without a creator only
-            $link = $link_base->where('creator', '')->first();
-        }
-        else if (($username !== false)) {
-            // Search for links created by $username only
-            $link = $link_base->where('creator', $username)->first();
-        }
-        else {
-            // Search for links created by any user
-            $link = $link_base->first();
+
+        if (($campaign !== null)) {
+            // Search for where campaign id is the same
+            $link = $link_base->where('campaign_id', $campaign)->first();
+        } else {
+            $link = $link_base->where('campaign_id', null)->first();
         }
 
         if ($link == null) {
             return false;
-        }
-        else {
+        } else {
             return $link->short_url;
         }
     }
 
-    static public function validateEnding($link_ending) {
+    static public function validateEnding($link_ending)
+    {
         $is_valid_ending = preg_match('/^[a-zA-Z0-9-_]+$/', $link_ending);
         return $is_valid_ending;
     }
 
-    static public function findPseudoRandomEnding() {
+    static public function findPseudoRandomEnding()
+    {
         /**
          * Return an available pseudorandom string of length _PSEUDO_RANDOM_KEY_LENGTH,
          * as defined in .env
@@ -110,7 +116,8 @@ class LinkHelper {
         return $pr_str;
     }
 
-    static public function findSuitableEnding() {
+    static public function findSuitableEnding()
+    {
         /**
          * Provided an in-use link ending (string),
          * find the next available base-32/62 ending.
@@ -125,8 +132,7 @@ class LinkHelper {
         if ($link == null) {
             $base10_val = 0;
             $base_x_val = 0;
-        }
-        else {
+        } else {
             $latest_link_ending = $link->short_url;
             $base10_val = BaseHelper::toBase10($latest_link_ending, $base);
             $base10_val++;

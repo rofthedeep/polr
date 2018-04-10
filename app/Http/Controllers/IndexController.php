@@ -2,6 +2,8 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Helpers\CryptoHelper;
+use App\Models\Campaign;
+
 
 class IndexController extends Controller {
     /**
@@ -23,6 +25,12 @@ class IndexController extends Controller {
             }
         }
 
-        return view('index', ['large' => true]);
+
+        $campaigns = Campaign::all();
+
+        return view('index', [
+            'large' => true,
+            'campaigns' => $campaigns
+        ]);
     }
 }

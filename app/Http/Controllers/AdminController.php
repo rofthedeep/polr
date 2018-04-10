@@ -6,6 +6,7 @@ use Hash;
 use App\Models\Link;
 use App\Models\User;
 use App\Helpers\UserHelper;
+use App\Models\Campaign;
 
 class AdminController extends Controller {
     /**
@@ -28,6 +29,9 @@ class AdminController extends Controller {
             return redirect(route('index'))->with('error', 'Invalid or disabled account.');
         }
 
+        $campaigns = Campaign::all();
+
+
         return view('admin', [
             'role' => $role,
             'admin_role' => UserHelper::$USER_ROLES['admin'],
@@ -35,7 +39,8 @@ class AdminController extends Controller {
             'api_key' => $user->api_key,
             'api_active' => $user->api_active,
             'api_quota' => $user->api_quota,
-            'user_id' => $user->id
+            'user_id' => $user->id,
+            'campaigns' => $campaigns
         ]);
     }
 

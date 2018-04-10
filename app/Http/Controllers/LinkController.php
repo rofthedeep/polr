@@ -85,6 +85,25 @@ class LinkController extends Controller {
         	}
         }
 
+        $params = '';
+
+        if ($link->campaign_id != null) {
+
+            // get campaign
+            $campaign = Campaign::where('id', $link->campaign_id)->first();
+
+            // get values and use them as params
+            $params = $campaign->value;
+
+            // update campaign clicks
+            $campaignClicks = intval($campaign->clicks);
+            if (is_int($campaignClicks)) {
+                $campaignClicks += 1;
+            }
+            $campaign->clicks = $campaignClicks;
+            $campaign->save();
+        }
+
         // Increment click count
         $long_url = $link->long_url;
         $clicks = intval($link->clicks);
@@ -100,7 +119,8 @@ class LinkController extends Controller {
             ClickHelper::recordClick($link, $request);
         }
         // Redirect to final destination
-        return redirect()->to($long_url, 301);
+        return redirect()->to($long_url . $params, 301);
+
     }
 
 }

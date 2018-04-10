@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Redirect;
 
 use App\Models\Link;
+use App\Models\Campaign;
 use App\Factories\LinkFactory;
 use App\Helpers\CryptoHelper;
 use App\Helpers\LinkHelper;

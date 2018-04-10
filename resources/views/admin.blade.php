@@ -68,6 +68,7 @@
                                 <td>{{ $campaign->name }}</td>
                                 <td style="overflow-x: hidden; overflow: scroll;white-space: nowrap;">{{ $campaign->value }}</td>
                                 <td>{{ $campaign->clicks }}</td>
+                                <td><a class="btn btn-primary btn-sm status-display" href="/edit/campaign/{{ $campaign->id }}">Edit</a></td>
                             </tr>
                         @endforeach
                         </tbody>
